@@ -1,21 +1,26 @@
-import os
+import logging
 from telegram import Update
-from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, ContextTypes, filters
+from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler
 
-BOT_TOKEN = os.getenv("BOT_TOKEN")
+logging.basicConfig(
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    level=logging.INFO
+)
+
+BOT_TOKEN = "7989043728:AAFZfKZKqRaZXuuQ5htY9qLaKSdZw_0wUHA"
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("👋 Welcome to SILENTSTRIKER_BOT!")
+    await update.message.reply_text("🤖 SilentStriker is Active!
+Type /help to see commands.")
 
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("🛠 Commands:\n/start - Start bot\n/help - Help menu")
+    await update.message.reply_text("/start - Welcome Message\n/help - List of Commands")
 
-async def echo(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text(update.message.text)
-
-if __name__ == '__main__':
+def main():
     app = ApplicationBuilder().token(BOT_TOKEN).build()
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CommandHandler("help", help_command))
-    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, echo))
     app.run_polling()
+
+if __name__ == "__main__":
+    main()
